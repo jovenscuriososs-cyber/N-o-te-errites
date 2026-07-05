@@ -7,7 +7,7 @@ export interface User {
   province: string; // Angola province
   avatar?: string;
   saldoNormal: number; // Free chips (Modo Normal)
-  saldoProfissional: number; // Real Kwanza (Modo Profissional)
+  saldoConta: number; // Real Account Balance (Modo Profissional)
   active: boolean; // Tracking online state
   wins: number;
   losses: number;
@@ -18,7 +18,7 @@ export interface User {
 
 export interface ActivityLog {
   id: string;
-  type: 'registro' | 'login' | 'logout' | 'deposito_voucher' | 'solicitacao_saque' | 'partida_criada' | 'partida_vitoria' | 'partida_derrota' | 'chat_geral' | 'chat_suporte';
+  type: 'registro' | 'login' | 'logout' | 'deposito_voucher' | 'solicitacao_saque' | 'partida_criada' | 'partida_vitoria' | 'partida_derrota' | 'chat_geral' | 'chat_suporte' | 'partida_abandono' | 'partida_abandono_desqualificacao';
   description: string;
   timestamp: string;
   amount?: number;
@@ -67,6 +67,7 @@ export interface LudoMatch {
   betAmount: number;
   hostConfirmed: boolean;
   guestConfirmed: boolean;
+  abandonedBy?: string; // username of player who abandoned
   
   // Game Play State
   pieces: {
