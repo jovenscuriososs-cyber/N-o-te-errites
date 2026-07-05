@@ -2,6 +2,9 @@ import { LudoMatch } from '../types';
 
 type Move = { dieIdx: number; pieceIdx: number; target: number; score: number };
 
+// Safe positions where pieces cannot be captured (entry and star houses)
+const SAFE_POSITIONS = [0, 6, 13, 20, 27, 34, 41, 48];
+
 export function rollDice(rerollDieOnly: boolean) {
   const d1 = Math.floor(1 + Math.random() * 6);
   const d2 = rerollDieOnly ? 0 : Math.floor(1 + Math.random() * 6);
@@ -45,8 +48,8 @@ export function getValidMoves(match: LudoMatch, role: 'host' | 'guest'): Move[] 
 
       // heuristic
       let score = 0;
-      // capture
-      if (target >= 0 && target <= 50) {
+      // capture - only if target is NOT a safe position
+      if (target >= 0 && target <= 50 && !SAFE_POSITIONS.includes(target)) {
         const abs = absIndexForRole(role, target);
         const isCapture = oppPieces.some((op) => op >= 0 && op <= 50 && absIndexForRole(role === 'host' ? 'guest' : 'host', op) === abs);
         if (isCapture) score += 1000;
@@ -106,12 +109,17 @@ export function bestMoveUpdates(match: LudoMatch, role: 'host' | 'guest') {
     }
   }
 
-  // captures
+  // captures - PROTECTED: cannot capture on safe positions
   const checkCapture = (pos: number) => {
     if (pos < 0 || pos > 50) return;
+    // Block captures on safe positions (entry and stars)
+    if (SAFE_POSITIONS.includes(pos)) {
+      console.log(`Position ${pos} is protected - no capture allowed`);
+      return;
+    }
     const abs = absIndexForRole(role, pos);
     oppPieces.forEach((opPos, opIdx) => {
-      if (opPos >= 0 && opPos <= 50) {
+      if (opPos >= 0 && opPos <= 50 && !SAFE_POSITIONS.includes(opPos)) {
         const oppAbs = absIndexForRole(role === 'host' ? 'guest' : 'host', opPos);
         if (oppAbs === abs) {
           oppPieces[opIdx] = -1;
