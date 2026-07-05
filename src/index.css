@@ -1,149 +1,125 @@
-@import "tailwindcss";
-
-@theme {
-  --font-sans: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
-  
-  --color-primary: #00C853;
-  --color-secondary: #0288D1;
-  --color-accent: #FFD700;
-  --color-background: var(--bg-color);
-  --color-foreground: var(--text-color);
-  --color-surface: var(--surface-color);
-  --color-danger: #FF3B5C;
-  --color-success: #00C853;
+:root {
+  color-scheme: light dark;
 }
 
+/* Force no scroll on mobile */
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  overflow: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Prevent scroll on main containers */
+.min-h-screen {
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollable content should be explicitly bounded */
+.overflow-y-auto {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+/* Hide scrollbars but keep scrolling functional */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Board container - no scroll */
+section[class*="rounded"] {
+  max-height: calc(100vh - 120px);
+  overflow: hidden;
+}
+
+/* Tailwind layer customizations */
 @layer base {
   :root {
-    --bg-color: #F8F9FA;
-    --text-color: #0A192F;
-    --surface-color: #FFFFFF;
-    --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(0, 0, 0, 0.15);
-    --border-color: rgba(0, 0, 0, 0.1);
+    color-scheme: light dark;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl;
   }
 
-  .dark {
-    --bg-color: #0A192F;
-    --text-color: #FFFFFF;
-    --surface-color: #122543;
-    --glass-bg: rgba(18, 30, 58, 0.85);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --border-color: rgba(255, 255, 255, 0.1);
+  .piece-host {
+    @apply bg-blue-500 hover:bg-blue-600;
   }
 
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    @apply antialiased selection:bg-primary/30 transition-colors duration-300 overflow-x-hidden;
-    font-family: var(--font-sans);
+  .piece-guest {
+    @apply bg-red-500 hover:bg-red-600;
+  }
+
+  .piece-highlighted {
+    @apply ring-2 ring-amber-400 scale-110;
   }
 }
 
 @layer utilities {
-  .glass {
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+  .safe-area-top {
+    @apply pt-[max(1rem,env(safe-area-inset-top))];
   }
 
-  .border-adaptive {
-    border-color: var(--border-color);
-  }
-  
-  .glass-dark {
-    background-color: rgba(10, 25, 47, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
-  }
-
-  .solar-gradient {
-    background: radial-gradient(circle at top right, rgba(0, 200, 83, 0.15), transparent 40%),
-                radial-gradient(circle at bottom left, rgba(2, 136, 209, 0.15), transparent 40%);
-  }
-
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .safe-area-bottom {
+    @apply pb-[max(1rem,env(safe-area-inset-bottom))];
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
+/* Remove default scrollbar across all browsers */
+* {
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
-::-webkit-scrollbar-track {
+
+*::-webkit-scrollbar-track {
   background: transparent;
 }
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 10px;
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
 }
 
-/* LUDO BOARD SPECIFIC STYLES */
-.ludo-red {
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
-.ludo-green {
-  background: linear-gradient(135deg, #11998e, #38ef7d);
-}
-.ludo-blue {
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-}
-.ludo-yellow {
-  background: linear-gradient(135deg, #ffe000, #799f0c);
-}
-.ludo-track {
-  background-color: var(--surface-color);
-  border-color: rgba(0, 0, 0, 0.08);
-}
-.dark .ludo-track {
-  background-color: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
-/* Piece highlights and animations */
-@keyframes piece-spin-highlight {
-  0% {
-    transform: scale(1) rotate(0deg);
-    box-shadow: 0 0 4px #00C853, inset 0 0 2px #00C853;
-  }
-  50% {
-    transform: scale(1.25) rotate(180deg);
-    box-shadow: 0 0 16px #00C853, inset 0 0 8px #00C853;
-    border-style: dashed;
-  }
-  100% {
-    transform: scale(1) rotate(360deg);
-    box-shadow: 0 0 4px #00C853, inset 0 0 2px #00C853;
-  }
-}
-
-.piece-highlighted {
-  cursor: pointer;
-  animation: piece-spin-highlight 1.5s infinite linear;
-  border: 2px dashed #ffffff !important;
-  z-index: 50;
-}
-
-.piece-host {
-  background: radial-gradient(circle at 35% 35%, #54c5ff, #0072ff);
-  box-shadow: 0 4px 6px -1px rgba(0, 114, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.piece-guest {
-  background: radial-gradient(circle at 35% 35%, #5eead4, #049645);
-  box-shadow: 0 4px 6px -1px rgba(4, 150, 69, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-}
-
