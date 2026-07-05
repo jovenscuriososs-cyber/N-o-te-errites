@@ -1,0 +1,8 @@
+{
+  "name": " Ludo Online Angola",
+  "description": "A multiplayer online Ludo game with betting features and dice mechanics, built using the Angular framework.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

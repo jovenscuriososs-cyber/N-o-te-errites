@@ -1,0 +1,21 @@
+/* src/styles/board.css */
+.grid-cols-15 { grid-template-columns: repeat(15, minmax(0, 1fr)); }
+
+/* Ludo natural palette */
+.ludo-red    { background: #ff4d4d; border-color: rgba(255,77,77,0.22); }
+.ludo-green  { background: #3ddc84; border-color: rgba(61,220,132,0.22); }
+.ludo-yellow { background: #ffd54f; border-color: rgba(255,213,79,0.22); }
+.ludo-blue   { background: #4da6ff; border-color: rgba(77,166,255,0.22); }
+
+/* Yards/centers */
+.ludo-host-yard { background: linear-gradient(135deg, rgba(255,77,77,0.14), rgba(255,77,77,0.05)); }
+.ludo-guest-yard { background: linear-gradient(135deg, rgba(61,220,132,0.14), rgba(61,220,132,0.05)); }
+.ludo-center { background: radial-gradient(circle at center, rgba(255,213,79,0.12), transparent 40%); }
+
+/* Track and projection */
+.ludo-track { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); }
+.ludo-projected { box-shadow: 0 0 0 4px rgba(0,122,255,0.16); transform: scale(1.02); }
+
+/* piece size */
+.board-piece { width:1rem; height:1rem; }
+@media (max-width:480px) { .board-piece { width:.8rem; height:.8rem } }
